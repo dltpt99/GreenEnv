@@ -1,0 +1,202 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+  
+    <style>
+      @font-face{
+        font-family: 'BMJUA';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      }
+      *{
+        font-family: 'BMJUA';
+        font-style: normal;
+        font-weight: normal;
+      }
+
+      .animated-title {font-size:25px; font-family:'Raleway',Sans-serif; font-weight:200; position: relative; width: 100%;max-width:100%; height: auto; padding:100px 0; overflow-x: hidden; overflow-y: hidden; }
+      .animated-title .track {position: absolute; white-space: nowrap;will-change: transform;animation: marquee 60s linear infinite; }
+      @keyframes marquee {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+      @media (hover: hover) and (min-width: 700px){
+      .animated-title .content {-webkit-transform: translateY(calc(100% - 8rem)); transform: translateY(calc(100% - 8rem));}
+          }
+
+      </style>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css" integrity="sha384-DOXMLfHhQkvFFp+rWTZwVlPVqdIhpDVYT9csOnHSgWQWPX0v5MCGtjCJbY6ERspU" crossorigin="anonymous">
+
+</head>
+<body style="margin:5px">
+<div th:replace="~{/fragment/nav.html :: top_nav }"></div>
+
+
+<div th:if="${member}">
+  <div>
+    <br><br>
+      <div th:if="${member.isTodayIsBirthday()}" ><h4 style = "text-align: center;" th:text = "|${member.Nick}님의|"></h4><h4 style = "text-align: center;">🎉생일을 축하합니다!🎉</h4>
+        <div style="text-align: center;"><img th:src="@{/image/birthdayImage/1.jpg}" style="float: inherit;" alt="이미지 준비 중.." width = "300px" height = "300px"></div>
+        <br><br>
+        <div class="d-flex">
+          <img th:src="@{/image/birthdayImage/logo.png}" width="80px" height="80px" class="flex-shrink-0 me-3" alt="..." style="padding: 10px;">
+        <div>
+        <h5 class="mt-0">🎁생일 축하 특별 할인🎁</h5>
+        <p>아래의 버튼을 눌러 생일 축하 기념 30% 할인 쿠폰을 획득할 수 있습니다.</p>
+        <button type="button" class="btn btn-success btn-sm" onclick= 'btnClick()'>쿠폰 받기</button>
+        <!--a href="#" class="stretched-link"  onclick= 'btnClick()'>할인 쿠폰 받기</a-->
+        </div>
+      </div><br><br><br><h4>[생일 추천]<p style="font-size: 15px;">이런 공기정화 식물은 어떠신가요?</p></h4>
+    </div>
+    <div th:unless="${member.isTodayIsBirthday()}"><h4>오늘의 추천 상품</h4></div>
+  </div>
+  <!--div th:text = "${member.Nick}"></div-->
+</div>
+
+<div th:unless="${member}">
+  <h4>오늘의 추천 상품</h4>
+</div>
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div th:if="${productList}" th:each="product, i : ${productList}" th:classappend="${i.index == 0} ? active : ''" class="carousel-item">
+        <img th:src="@{${product.img}}" th:href="@{/shop}" class="d-block w-100" height = "240px" alt="이미지 준비 중"> <!-- 여기-->
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<br>
+<!-- 로그인한 상태라면 주문목록 조회 가능 -->
+<div sec:authorize-expr="isAuthenticated()">
+  <div class = "row">
+    <div class = "col d-grid gap-3">
+      <button class="btn btn-success" style = "margin: 10px 5px 0px 5px; height: 50px;" type="button" th:onclick="|location.href = '@{/plant/list}'|">나의 식물</button>
+			<button class="btn btn-success" style = "margin: 0px 5px 10px 5px; height: 50px;" type="button" th:onclick="|location.href = '@{/plant/add}'|">식물 추가하기</button>
+    </div>
+    <div class = "col">
+      <div class="card border-success mb-3" style="margin-right: 5px;">
+        <div class="card-body">
+          <h5 class="card-title">주문 목록</h5>
+          <p class="card-text" style="font-size:12px">주문하신 상품 목록입니다.</p>
+          <!--<a th:href="@{/shop/order}" class="btn btn-primary">이동하기</a>-->
+          <button type="button" class="btn btn-success"
+                style="border-radius: 50px;"
+                th:onclick="|location.href = '@{/shop/order}'|">
+            이동하기
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 로그인한 상태라면 주문목록 조회 가능
+<div sec:authorize-expr="isAuthenticated()">
+	<div class="card border-success mb-3" style="margin: 5px">
+		  <div class="card-body">
+				<h5 class="card-title">나의 주문 목록</h5>
+				<p class="card-text" style="font-size:12px">주문하신 상품 목록입니다.</p>
+				<a th:href="@{/shop/order}" class="card-link">이동하기</a>
+		  </div>
+	</div>
+	<div class="d-grid gap-2">
+			<button class="btn btn-outline-secondary" type="button" th:onclick="|location.href = '@{/plant/list}'|">나의 식물</button>
+			<button class="btn btn-outline-success" type="button" th:onclick="|location.href = '@{/plant/add}'|">식물 추가하기</button>
+	</div>
+</div-->
+
+
+
+<br>
+<div class = "row">
+  <div class = "col" style="margin: 0px 0px 0px 5px"> <!--style="max-width: 14rem;"-->
+    <div class="card border-success mb-3">
+      <div class="card-body">
+        <h5 class="card-title">전체 상품 목록</h5>
+        <p class="card-text" style="font-size:12px">등록되어 있는</br>모든 상품 목록입니다.</p>
+        <a th:href="@{/shop}" class="btn btn-success" style="border-radius: 50px;">이동하기</a>
+      </div>
+    </div>
+  </div>
+  <div class = "col" style="margin: 0px 5px 0px 0px">
+    <div class="card border-success mb-3">
+      <div class="card-body">
+        <h5 class="card-title">식물 도감</h5>
+        <p class="card-text" style="font-size:12px">식물의 특징을</br>알 수 있습니다.</p>
+        <a th:href="@{/plant}" class="btn btn-success" style="border-radius: 50px;">이동하기</a>
+      </div>
+     </div>
+  </div>
+</div>
+
+
+<br><br>
+<p id="clock" style="color:black; font-size: 12px; text-align: right;">clock</p>
+    
+    <script>
+
+        function btnClick(){
+          alert('30% 할인 쿠폰 수령이 완료되었습니다. (최초 수령 건에만 적용됩니다.)');
+        }
+
+        var Target = document.getElementById("clock");
+        function clock() {
+            var time = new Date();
+
+            var month = time.getMonth();
+            var date = time.getDate();
+            var day = time.getDay();
+            var week = ['일', '월', '화', '수', '목', '금', '토'];
+
+            var hours = time.getHours();
+            var minutes = time.getMinutes();
+            var seconds = time.getSeconds();
+
+            Target.innerText = 
+            `${month + 1}월 ${date}일 ${week[day]}요일 ` +
+            `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+                
+        }
+        clock();
+        setInterval(clock, 1000); // 1초마다 실행
+    </script>
+    <!--<br><hr><br>-->
+
+    <div th:if="${member}">
+      <div>
+          <div th:if="${member.isTodayIsBirthday()}" >
+            <div class="animated-title">
+              <div class="track">
+                <div class="content" th:text = "|${member.Nick}님의 생일을 축하합니다!🧁 &nbsp; ${member.Nick}님의 생일을 축하합니다!🎉 &nbsp; ${member.Nick}님의 생일을 축하합니다!🍰 &nbsp; ${member.Nick}님의 생일을 축하합니다!🎊 &nbsp; ${member.Nick}님의 생일을 축하합니다!🎂 &nbsp;|"></div>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>  
+
+
+<!-- Optional JavaScript; choose one of the two! -->
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+-->
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>상품 정보</title>
+	
+    <style>
+        @font-face{
+        font-family: 'BMJUA';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+      	}
+		*{
+			font-family: 'BMJUA';
+			font-style: normal;
+			font-weight: normal;
+		}
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css" integrity="sha384-DOXMLfHhQkvFFp+rWTZwVlPVqdIhpDVYT9csOnHSgWQWPX0v5MCGtjCJbY6ERspU" crossorigin="anonymous">
+
+</head>
+<body style="margin: 5px;">
+
+<div th:replace="~{/fragment/nav.html :: top_nav }"></div>
+
+<div style="text-align: center;" th:each="image : ${#strings.arraySplit(product.img, ',')}">
+    <img th:src="@{${image}}" width="200px" height="200px">
+</div>
+
+<br><br>
+
+<div class="container-md">
+        <div class = "border border-success p-3 mb-2 test" style="border-radius: 20px;">
+            <div class = "row">
+                <div class="w-auto p-3" th:text="|식물 판매자: ${product.sellerName}|">test1</div>
+            </div>
+            <div class = "row">
+                <div class="w-auto p-3" th:text="|식물 이름: ${product.plantName}|">test2</div>
+            </div>
+            <div class = "row">
+                <div class="w-auto p-3" th:text="|식물 가격: ${product.cost}|">test2</div>
+            </div>
+        </div>
+</div>
+
+<!--<div th:each="image : ${#strings.arraySplit(product.img, ',')}">
+    <img th:src="@{${image}}" width="200px" height="200px">
+</div>
+<h2 th:text="|식물 판매자: ${product.sellerName}|"/>
+<h2 th:text="|식물 이름: ${product.plantName}|"/>
+<h2 th:text="|식물 가격: ${product.cost}|"/-->
+<br><br>
+
+<form th:action="@{|/shop/order/${product.id}|}" method="post" style="padding: 10px;">
+
+    <p>수량</p>
+    <div class = "input-group mb-3" style="padding: 0px 10px 0px 10px;">
+        <input type="number" name="amount" min="1" max="10000" class = "form-control" required>
+    </div>
+
+    <p>주소지</p>
+    <div class = "input-group mb-3" style="padding: 0px 10px 0px 10px;">
+        <input type="text" class = "form-control" minlength="10" name="address" required>
+    </div>
+
+    <p>판매자님께 전하고 싶은 말</p>
+    <div class = "input-group mb-3" style="padding: 0px 10px 0px 10px;">
+        <input type="text" name="msgToSeller" maxlength="50" class = "form-control" id="msgToSeller">
+    </div>
+
+    <p>배달원님께 전하고 싶은 말</p>
+    <div class = "input-group mb-3" style="padding: 0px 10px 0px 10px;">
+        <input type="text" name="msgToDeliver" maxlength="50" class = "form-control" id="msgToDeliver">
+    </div>
+
+    <!--label for="msgToSeller">판매자님께 전하고 싶은 말</label><br>
+    <input type="text" name="msgToSeller" id="msgToSeller">
+    <br>
+    <label for="msgToDeliver">배달원님께 전하고 싶은 말</label><br>
+    <input type="text" name="msgToDeliver" id="msgToDeliver"-->
+    <br><br>
+    <input type="submit" value="주문하기" class = "btn btn-success" style="float:right; margin-bottom: 15px; border-radius: 40px;">
+</form>
+
+	  
+<!-- Optional JavaScript; choose one of the two! -->
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+-->
+</body>
+</html>

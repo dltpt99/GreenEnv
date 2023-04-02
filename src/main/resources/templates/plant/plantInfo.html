@@ -1,0 +1,131 @@
+<!doctype html>
+<html
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>식물 추가</title>
+    <style>
+        table{
+            border-style: solid;
+            border-width: 3px;
+        }
+        tr{
+            text-align: left;
+        }
+        @font-face{
+          font-family: 'BMJUA';
+          src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/BMJUA.woff') format('woff');
+          font-weight: normal;
+          font-style: normal;
+        }
+        *{
+          font-family: 'BMJUA';
+          font-style: normal;
+          font-weight: normal;
+        }
+      </style>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.rtl.min.css" integrity="sha384-DOXMLfHhQkvFFp+rWTZwVlPVqdIhpDVYT9csOnHSgWQWPX0v5MCGtjCJbY6ERspU" crossorigin="anonymous">
+    
+</head>
+<body style="margin: 5px;"> 
+    <div th:replace="~{/fragment/nav.html :: top_nav }"></div>
+
+    <img style="padding: 5px;" th:src="@{|/image/plantImage/${plant.id}.${plant.plantName}/1.png|}">
+    
+    <br>
+    <br>
+    <br>
+
+
+    <table class = "table" style="border-color: #198754;">
+        <thead>
+            <tr>
+                <th colspan="2" scope="col" style="font-size: 24px; padding:20px; border-color: white; text-align: left;"><b>식물 상세 정보</b></th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <span><th scope="row" class = "table-light" style="padding:15px">식물 이름</th></span>
+            <td class = "table-light" style="padding:15px" th:text="|${plant.plantName}|"></td>
+          </tr>
+          <tr>
+            <th scope="row" style="border-color:rgb(218, 218, 218); padding:15px" >키우기 좋은 계절</th>
+            <td th:text="|${plant.season}|" style="border-color:rgb(218, 218, 218); padding:15px"></td>
+          </tr>
+          <tr>
+            <th scope="row" class = "table-light" style = "padding:15px">생장 속도</th>
+            <td class = "table-light" th:text="|${plant.growSpeed}|" style = "padding:15px"></td>
+          </tr>
+          <tr>
+            <th scope="row" style="border-color:rgb(218, 218, 218); padding:15px">생장 온도</th>
+            <td th:text="|${plant.growTemp}|" style="border-color:rgb(218, 218, 218); padding:15px"></td>
+          </tr>
+          <tr>
+            <th scope="row" class = "table-light" style = "padding:15px">식물 높이</th>
+            <td class = "table-light" th:text="|${plant.height}|" style = "padding:15px"></td>
+          </tr>
+          <tr>
+            <th scope="row" style="border-color:rgb(218, 218, 218); padding:15px">용도</th>
+            <td th:text="|${plant.plantType}|" style="border-color:rgb(218, 218, 218); padding:15px"></td>
+          </tr>
+          <tr>
+            <th scope="row" class = "table-light" style = "padding:15px">생육 난이도</th>
+            <td class = "table-light" th:text="|${plant.difficulty}|" style = "padding:15px"></td>
+          </tr>
+          <tr>
+            <th scope="row" style="border-color:rgb(218, 218, 218); padding:15px">특징</th>
+            <td th:text="|${plant.feature}|" style="border-color:rgb(218, 218, 218); padding:15px"></td>
+          </tr>
+          <tr>
+            <th scope="row" class = "table-light" style = "padding:15px">비료</th>
+                <td class = "table-light" style = "padding:15px" th:if="${plant.fertilizerCycle != 0} " th:text="|주기 : ${plant.fertilizerCycle}|" ></td>
+                <td class = "table-light" style = "padding:15px" th:if="${plant.fertilizerCycle == 0} " th:text="|비료를 주지 않아도 좋아요!|"></td>
+          </tr>
+          <tr>
+            <th scope="row" style="border-color:rgb(218, 218, 218); padding:15px">물 주기</th>
+            <td th:text="|${plant.waterCycleWinter}|" style="border-color:rgb(218, 218, 218); padding:15px"></td>
+          </tr>
+          <tr>
+            <th scope="row" class = "table-light" style = "padding:15px">조심해야 할<br>병충해</th>
+            <td class = "table-light" th:text="|${plant.bug}|" style = "padding:15px">병충해에 강해요</td>
+          </tr>
+
+
+        </tbody>
+    </table>
+
+
+    <!--div style="float: left;">
+    <h2 th:text="|식물 이름 : ${plant.plantName}|"></h2>
+    <h2 th:text="|키우기 좋은 계절 : ${plant.season}|"></h2>
+    <h2 th:text="|생장 속도 : ${plant.growSpeed}|"></h2>
+    <h2 th:text="|생장 온도 : ${plant.growTemp}|"></h2>
+    <h2 th:text="|식물 높이 : ${plant.height}|"></h2>
+    <h2 th:text="|용도 : ${plant.plantType}|"></h2>
+    <h2 th:text="|생육 난이도 : ${plant.difficulty}|"></h2>
+    <h2 th:text="|특징 : ${plant.feature}|"></h2>
+    <h2 th:if="${plant.fertilizerCycle != 0} " th:text="|비료 주기 : ${plant.fertilizerCycle}|" ></h2>
+    <h2 th:if="${plant.fertilizerCycle == 0} " th:text="|비료를 주지 않아도 좋아요!|"></h2>
+    <h2 th:text="|물 주기 : ${plant.waterCycleWinter}|"></h2>
+    <h2 th:text="|조심해야할 병충해 : ${plant.bug}|">병충해에 강해요!</h2>
+    </div>
+    <div style="float:left;">
+        <img th:src="@{|/image/plantImage/${plant.id}.${plant.plantName}/1.png|}">
+    </div-->
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    -->
+
+</body>
+</html>
